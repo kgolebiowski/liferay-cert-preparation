@@ -15,4 +15,8 @@ hs_err_pid*
 .idea
 *.iml
 
+# Maven
 target
+
+# Jrebel
+rebel.xml
