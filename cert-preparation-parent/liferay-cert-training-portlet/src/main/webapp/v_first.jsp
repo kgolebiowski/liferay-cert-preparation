@@ -5,12 +5,56 @@
         showBackURL="true"
         backURL='${redirect}' />
 
+<h2>Render URLs</h2>
+
+<div>
+    <h3>Render URL - Case 1</h3>
+
+    <p style="font-weight: bold">Standard RenderURL</p>
+    <pre clas="code">&lt;liferay-portlet:renderURL var="simpleRenderUrl" /&gt;</pre>
+
+    <liferay-portlet:renderURL var="simpleRenderUrl" />
+
+    <p>(<a href="${simpleRenderUrl}">link</a>)</p>
+</div>
+
+<hr />
+
+<div>
+    <h3>Render URL - Case 2</h3>
+
+    <p style="font-weight: bold">Standard RenderURL preserving current render parameters</p>
+    <pre clas="code">&lt;liferay-portlet:renderURL var="renderUrlWithCopyCurr" copyCurrentRenderParameters="true" /&gt;</pre>
+
+    <liferay-portlet:renderURL var="renderUrlWithCopyCurr" copyCurrentRenderParameters="true" />
+
+    <p>(<a href="${renderUrlWithCopyCurr}">link</a>)</p>
+</div>
+
+<hr />
+
 <h2>ActionURLs</h2>
 
 <div>
-    <h3>Case 1 (proceed to the next view)</h3>
+    <h3>ActionURL - Case 1 (proceed to the next view)</h3>
     <p style="font-weight: bold">This is the proper form, allowing you to proceed to the next part of the
-    tutorial.</p>
+    tutorial. Mind the usage of <em>backUrl</em> and <em>redirect</em> parameters</p>
+
+    <p>Action URL code: </p>
+    <pre class="code">
+&#x3C;liferay-portlet:actionURL name=&#x22;saveName&#x22; var=&#x22;saveNameUrlCase1&#x22;&#x3E;
+    &#x3C;liferay-portlet:param name=&#x22;backUrl&#x22; value=value=&#x22;\${currentURL}&#x22; /&#x3E;
+    &#x3C;liferay-portlet:param name=&#x22;&#x3C;%= WebKeys.MVC_PATH %&#x3E;&#x22; value=&#x22;/v_second.jsp&#x22; /&#x3E;
+&#x3C;/liferay-portlet:actionURL&#x3E;
+    </pre>
+
+    <p>Action method: </p>
+    <pre class="code">
+actionResponse.setRenderParameter(
+    WebKeys.MVC_PATH, actionRequest.getParameter(WebKeys.MVC_PATH));
+actionResponse.setRenderParameter(
+    WebKeys.REDIRECT, actionRequest.getParameter("backUrl"));
+    </pre>
 
     <liferay-portlet:actionURL name="saveName" var="saveNameUrlCase1">
         <liferay-portlet:param name="backUrl" value="${currentURL}" />
@@ -34,14 +78,14 @@
 <hr />
 
 <div>
-    <h3>Case 2 - standard behaviour</h3>
+    <h3>ActionURL - Case 2 - standard behaviour</h3>
     <p style="font-weight: bold">This code will add single render parameter to <i>ActionURL</i> and then
     sets it again in <i>repeatRenderParametersAction</i> portlet action method</p>
 
     <p>Action URL code: </p>
     <pre class="code">
 &#x3C;liferay-portlet:actionURL name=&#x22;repeatRenderParametersAction&#x22; var=&#x22;repeatRenderParametersActionUrl&#x22;&#x3E;
-    &#x3C;liferay-portlet:param name=&#x22;&#x3C;%= WebKeys.MVC_PATH %&#x3E;&#x22; value=&#x22;/v_second.jsp&#x22; /&#x3E;
+    &#x3C;liferay-portlet:param name=&#x22;&#x3C;%= WebKeys.MVC_PATH %&#x3E;&#x22; value=&#x22;/v_first.jsp&#x22; /&#x3E;
     &#x3C;liferay-portlet:param name=&#x22;foo&#x22; value=&#x22;bar&#x22; /&#x3E;
 &#x3C;/liferay-portlet:actionURL&#x3E;
     </pre>
@@ -75,7 +119,7 @@ actionResponse.setRenderParameter(
 <hr />
 
 <div>
-    <h3>Case 3 - positive 'redirect'</h3>
+    <h3>ActionURL - Case 3 - positive 'redirect'</h3>
     <p style="font-weight: bold">In this case, the action is performed and then, due to the 'redirect' parameter,
         the form returns back to <u>exactly</u> this URL. <u>All parameters set in this ActionURL are then ignored.</u>
         Action class is empty, if one tries to use actionResponse.setRenderParameter, then
@@ -105,7 +149,7 @@ actionResponse.setRenderParameter(
 <hr />
 
 <div>
-    <h3>Case 4 - negative 'redirect'</h3>
+    <h3>ActionURL - Case 4 - negative 'redirect'</h3>
     <p style="font-weight: bold">Similar case to previous one, but in here the 'redirect' parameter is re-set in
         action method which causes <i>java.lang.IllegalStateException: Set render parameter has already been called</i> error.</p>
 
@@ -138,7 +182,7 @@ actionResponse.setRenderParameter(
 <hr />
 
 <div>
-    <h3>Case 5 - ActionURL used in GET</h3>
+    <h3>ActionURL - Case 5 - ActionURL used in GET</h3>
     <p style="font-weight: bold">....</p>
 
     <p>Action URL code: </p>
@@ -160,30 +204,6 @@ actionResponse.setRenderParameter(
     <% } %>
 
     <p>(<a href="${getTriggeredActionTestUrl}">link</a>)</p>
-</div>
-
-<hr />
-
-<h2>Render URLs</h2>
-
-<div>
-    <p style="font-weight: bold">Standard RenderURL</p>
-    <pre clas="code">&lt;liferay-portlet:renderURL var="simpleRenderUrl" /&gt;</pre>
-
-    <liferay-portlet:renderURL var="simpleRenderUrl" />
-
-    <p>(<a href="${simpleRenderUrl}">link</a>)</p>
-</div>
-
-<hr />
-
-<div>
-    <p style="font-weight: bold">Standard RenderURL preserving current render parameters</p>
-    <pre clas="code">&lt;liferay-portlet:renderURL var="renderUrlWithCopyCurr" copyCurrentRenderParameters="true" /&gt;</pre>
-
-    <liferay-portlet:renderURL var="renderUrlWithCopyCurr" copyCurrentRenderParameters="true" />
-
-    <p>(<a href="${renderUrlWithCopyCurr}">link</a>)</p>
 </div>
 
 <hr />
